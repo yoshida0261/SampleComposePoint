@@ -8,8 +8,11 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.google.accompanist.pager.ExperimentalPagerApi
 import com.stah.samplecomposepoint.AppDestinations.DAY
 import com.stah.samplecomposepoint.AppDestinations.YEAR
+import com.stah.samplecomposepoint.point.PointHistory
+import com.stah.samplecomposepoint.point.PointMonthlyScreen
 import androidx.navigation.compose.rememberNavController as rememberNavController1
 
 object AppDestinations {
@@ -19,6 +22,7 @@ object AppDestinations {
     const val DAY = "day"
 }
 
+@ExperimentalPagerApi
 @ExperimentalMaterialApi
 @Composable
 fun PointNavigation(
@@ -34,7 +38,7 @@ fun PointNavigation(
         composable(
             AppDestinations.POINT_MONTHLY
         ) { backStackEntry ->
-
+            PointMonthlyScreen(actions.selectedHistory, actions.navigateUp)
         }
         composable(
             "${AppDestinations.POINT_HISTORY}/{$YEAR}/{$DAY}",
@@ -48,6 +52,14 @@ fun PointNavigation(
             )
         ) { backStackEntry ->
 
+            val p = PointHistory(
+                point = 1000,
+                pointName = "インタビューポイント",
+                itemName = "",
+                date = "2021年xx月xx日 xx:xx"
+            )
+            val list = listOf(p,p,p,p,p)
+            PointHistory("${backStackEntry.arguments?.get(YEAR)}年${backStackEntry.arguments?.get(DAY)}月の履歴",list, actions.navigateUp)
         }
     }
 }
